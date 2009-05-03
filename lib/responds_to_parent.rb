@@ -4,7 +4,7 @@ module RespondsToParent
   # Executes the response body as JavaScript in the context of the parent window.
   # Use this method of you are posting a form to a hidden IFRAME or if you would like
   # to use IFRAME base RPC.
-  def responds_to_parent(&block)
+  def responds_to_parent(args = {}, &block)
     yield
 
     if performed?
@@ -38,7 +38,7 @@ module RespondsToParent
       render :text => "<html><body><script type='text/javascript' charset='utf-8'>
         var loc = document.location;
         with(window.parent) { setTimeout(function() { window.eval('#{script}'); loc.replace('about:blank'); }, 1) } 
-      </script></body></html>"
+      </script></body></html>", :status => args[:status] || 200
     end
   end
   alias respond_to_parent responds_to_parent
